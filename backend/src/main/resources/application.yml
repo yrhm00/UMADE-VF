@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/umade
+    username: umade
+    password: umade
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+server:
+  port: 8080
+
+umade:
+  jwt:
+    secret: "CHANGE_ME_SUPER_SECRET_KEY_256_BITS"
+    expiration-ms: 86400000  # 24h
