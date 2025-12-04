@@ -5,8 +5,15 @@ import com.umade.users.User;
 import com.umade.common.BaseEntity;
 import jakarta.persistence.*;
 
+import lombok.*;
+
 @Entity
 @Table(name = "favorites_inspirations")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class FavoriteInspiration extends BaseEntity {
 
     @EmbeddedId
@@ -19,7 +26,4 @@ public class FavoriteInspiration extends BaseEntity {
     @ManyToOne
     @MapsId("inspirationId")
     private Inspiration inspiration;
-
-    // getters/setters
-    // ...
 }

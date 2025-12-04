@@ -2,10 +2,16 @@ package com.umade.inspirations;
 
 import jakarta.persistence.*;
 
+import lombok.*;
+
 import java.util.UUID;
 
 @Entity
 @Table(name = "inspiration_media")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class InspirationMedia {
 
     @Id
@@ -23,7 +29,4 @@ public class InspirationMedia {
     private String mediaType; // IMAGE / VIDEO
 
     private int position;
-
-    // getters/setters
-    // ...
 }

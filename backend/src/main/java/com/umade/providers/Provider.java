@@ -4,10 +4,17 @@ import com.umade.common.BaseEntity;
 import com.umade.users.User;
 import jakarta.persistence.*;
 
+import lombok.*;
+
 import java.util.UUID;
 
 @Entity
 @Table(name = "providers")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Provider extends BaseEntity {
 
     @Id
@@ -32,8 +39,6 @@ public class Provider extends BaseEntity {
     private String city;
     private String country;
 
+    @Builder.Default
     private boolean verified = false;
-
-    // getters/setters
-    // ...
 }

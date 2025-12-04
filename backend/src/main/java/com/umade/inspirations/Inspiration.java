@@ -4,10 +4,17 @@ import com.umade.common.BaseEntity;
 import com.umade.providers.Provider;
 import jakarta.persistence.*;
 
+import lombok.*;
+
 import java.util.UUID;
 
 @Entity
 @Table(name = "inspirations")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Inspiration extends BaseEntity {
 
     @Id
@@ -30,8 +37,6 @@ public class Inspiration extends BaseEntity {
     private String mainColor;
 
     @Column(nullable = false)
+    @Builder.Default
     private boolean publicVisible = true;
-
-    // getters/setters
-    // ...
 }
