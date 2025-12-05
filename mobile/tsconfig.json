@@ -1,5 +1,18 @@
 {
   "compilerOptions": {
+    "allowJs": false,
+    "jsx": "react-native",
+    "lib": ["DOM", "ESNext"],
+    "moduleResolution": "node",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "extends": "expo/tsconfig.base"
     "target": "es2019",
     "lib": ["es2019"],
     "jsx": "react-native",
