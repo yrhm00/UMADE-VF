@@ -33,6 +33,8 @@ aws:
   s3:
     bucket: "umade-bucket"
 
+fcm:
+  server-key: "CHANGE_ME_FCM_SERVER_KEY"
 analytics:
   enabled: true
   segment:
