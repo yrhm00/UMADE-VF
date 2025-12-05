@@ -1,12 +1,10 @@
 package com.umade.auth;
 
-import com.umade.users.User;
-import com.umade.users.UserRepository;
 import com.umade.users.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public AuthController(AuthService authService) {
         this.authService = authService;

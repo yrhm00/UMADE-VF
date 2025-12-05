@@ -95,15 +95,15 @@ public class InspirationService {
             favoriteRepo.save(fav);
             inspiration.setFavoriteCount(inspiration.getFavoriteCount() + 1);
             inspirationRepository.save(inspiration);
+
+            analyticsService.trackEvent(user.getId().toString(), "Inspiration Favorited", Map.of(
+                    "inspirationId", inspiration.getId().toString(),
+                    "title", inspiration.getTitle(),
+                    "providerId",
+                    inspiration.getProvider() != null ? inspiration.getProvider().getId().toString() : "PLATFORM"));
         }
 
         return buildActionResponse(inspiration, user);
-        favoriteRepo.save(fav);
-        analyticsService.trackEvent(user.getId().toString(), "Inspiration Favorited", Map.of(
-                "inspirationId", inspiration.getId().toString(),
-                "title", inspiration.getTitle(),
-                "authorId", inspiration.getAuthor().getId().toString()
-        ));
     }
 
     @Transactional
@@ -148,8 +148,7 @@ public class InspirationService {
                 inspiration.getFavoriteCount(),
                 inspiration.getReportCount(),
                 favorite,
-                reported
-        );
+                reported);
     }
 
     public record InspirationRequest(
@@ -161,8 +160,7 @@ public class InspirationService {
             String mainColor,
             Boolean publicVisible,
             UUID providerId,
-            List<MediaRequest> media
-    ) {
+            List<MediaRequest> media) {
     }
 
     public record MediaRequest(String url, String mediaType, Integer position) {
@@ -176,7 +174,6 @@ public class InspirationService {
             int favoriteCount,
             int reportCount,
             boolean favorite,
-            boolean reported
-    ) {
+            boolean reported) {
     }
 }

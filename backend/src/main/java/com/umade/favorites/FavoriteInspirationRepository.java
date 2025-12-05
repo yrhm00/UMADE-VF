@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.umade.inspirations.Inspiration;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,8 +17,6 @@ public interface FavoriteInspirationRepository
     long countByIdInspirationId(UUID inspirationId);
 
     boolean existsByUserAndInspiration(User user, Inspiration inspiration);
-public interface FavoriteInspirationRepository
-        extends JpaRepository<FavoriteInspiration, FavoriteInspirationId> {
 
     Page<FavoriteInspiration> findByUser(User user, Pageable pageable);
 }
