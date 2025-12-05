@@ -226,31 +226,44 @@ Avantages : rapidité, sécurité, aucune charge binaire sur l'API.
 
 ## 10. 🚀 Roadmap du Backend
 
+### Feature flags & rollout progressif
+
+Pour sécuriser l'activation progressive des fonctionnalités sensibles (messagerie et notifications), un système de feature flags maison est introduit :
+
+- Configuration dans `application.yml` sous `umade.feature-flags.messaging` et `umade.feature-flags.notifications`.
+- Chaque feature définit :
+  - `enabled` : bascule globale (false par défaut pour éviter l'exposition accidentelle).
+  - `rollout-percentage` : pourcentage d'utilisateurs autorisés, basé sur un hashing déterministe du `userId`.
+  - `allow-list` : liste blanche d'UUIDs toujours activés (équipes QA/ops).
+- Les services `MessageService` et `NotificationService` vérifient les flags avant toute action et renvoient un HTTP 403 explicite si la fonctionnalité n'est pas encore ouverte pour l'utilisateur.
+
 ### Phase 1 – Fondation (MVP technique)
 
 - Auth complet (register / login / JWT)
 - Users (CRUD + profil)
+- Feed inspirations (lecture publique)
+- Profile utilisateur
+
+### Phase 2 – Providers & favoris
+
 - Providers (profil pro)
-- Inspirations (CRUD + feed)
-- Favorites (inspirations)
+- Favorites (inspirations + prestataires)
+- Reviews
 - Upload S3 (pré-signé)
 
-### Phase 2 – Engagement utilisateur
+### Phase 3 – Engagement utilisateur (messaging + notifications)
 
-- Messages client ↔ prestataire
-- Notifications push (FCM)
-- Centre de notifications
-- Favoris prestataires
-- Reviews
+- Messages client ↔ prestataire (débloqués via feature flag `messaging`)
+- Notifications push (FCM) + centre de notifications (débloqués via feature flag `notifications`)
 
-### Phase 3 – Événements
+### Phase 4 – Événements
 
 - CRUD événements
 - Liste invités
 - Partage d'événements
 - Bannière
 
-### Phase 4 – Améliorations marketplace
+### Phase 5 – Améliorations marketplace
 
 - Filtres avancés
 - Search engine (PostgreSQL + indexes)

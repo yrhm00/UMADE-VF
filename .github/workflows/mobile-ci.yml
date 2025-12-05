@@ -1,0 +1,101 @@
+name: Mobile CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: mobile/package.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Tests
+        run: npm run test:ci
+
+  build-beta:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: mobile/package.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+      - name: Login to Expo
+        run: eas whoami || eas login --token "$EXPO_TOKEN"
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      - name: Configure secrets
+        run: |
+          eas secret:push --scope project --name API_BASE_URL --value "$API_BASE_URL" || true
+          eas secret:push --scope project --name FCM_WEB_API_KEY --value "$FCM_WEB_API_KEY" || true
+          eas secret:push --scope project --name EAS_PROJECT_ID --value "$EAS_PROJECT_ID" || true
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          FCM_WEB_API_KEY: ${{ secrets.FCM_WEB_API_KEY }}
+          EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
+      - name: Build Android beta
+        run: eas build --platform android --profile beta --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      - name: Build iOS beta
+        run: eas build --platform ios --profile beta --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+  build-release:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: mobile/package.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+      - name: Login to Expo
+        run: eas whoami || eas login --token "$EXPO_TOKEN"
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      - name: Build Android release
+        run: eas build --platform android --profile release --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      - name: Build iOS release
+        run: eas build --platform ios --profile release --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
