@@ -2,11 +2,13 @@ package com.umade.messages;
 
 import com.umade.users.User;
 import com.umade.users.UserRepository;
+import com.umade.analytics.AnalyticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -16,6 +18,7 @@ public class MessageService {
     private final ConversationRepository conversationRepository;
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
+    private final AnalyticsService analyticsService;
 
     public List<Conversation> getUserConversations(User user) {
         return conversationRepository.findByUserId(user.getId());
@@ -70,6 +73,17 @@ public class MessageService {
         conv.setLastMessagePreview(content.length() > 50 ? content.substring(0, 50) + "..." : content);
         conversationRepository.save(conv);
 
-        return messageRepository.save(msg);
+        Message saved = messageRepository.save(msg);
+        UUID recipientId = conv.getUser1().getId().equals(sender.getId())
+                ? conv.getUser2().getId()
+                : conv.getUser1().getId();
+
+        analyticsService.trackEvent(sender.getId().toString(), "Message Sent", Map.of(
+                "conversationId", conv.getId().toString(),
+                "recipientId", recipientId.toString(),
+                "hasAttachment", attachmentUrl != null && !attachmentUrl.isBlank()
+        ));
+
+        return saved;
     }
 }
