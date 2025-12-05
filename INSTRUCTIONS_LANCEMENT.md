@@ -51,7 +51,10 @@ Ouvrez un **nouveau terminal**, puis exécutez :
 # 1. Aller dans le dossier backend
 cd "Desktop/UMADE VF/backend"
 
-# 2. Lancer le serveur avec la commande installée
+# 2. Configurer Java 17 (Important pour Mac M1/M2/M3)
+export JAVA_HOME="/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
+
+# 3. Lancer le serveur
 gradle bootRun
 ```
 
