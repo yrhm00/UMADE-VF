@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UI System · Umade</title>
+    <link rel="stylesheet" href="./components.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <div>
+          <p style="color: var(--color-text-muted); margin: 0 0 8px;">UI Kit accessible</p>
+          <h1 style="margin: 0;">Bibliothèque de composants</h1>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-pressed="false">
+          <span aria-hidden="true">🌞</span>
+          <span>Mode clair</span>
+        </button>
+      </header>
+
+      <section class="section" aria-labelledby="buttons-title">
+        <h2 id="buttons-title">Boutons</h2>
+        <p class="helper-text">Surface minimum 44px, focus visible, contrastes AA.</p>
+        <div class="grid">
+          <button class="button button-primary" type="button">Action principale</button>
+          <button class="button button-ghost" type="button">Secondaire</button>
+          <button class="button" type="button">
+            <span aria-hidden="true">⭐</span>
+            Avec icône
+          </button>
+          <button class="button button-danger" type="button">Supprimer</button>
+          <a href="#" class="button" role="button">Lien bouton</a>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="inputs-title">
+        <h2 id="inputs-title">Champs de formulaire</h2>
+        <div class="grid">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" class="input" placeholder="prenom@exemple.fr" aria-describedby="email-help" />
+            <p id="email-help" class="helper-text">Champ requis — label explicite et contraste renforcé.</p>
+          </div>
+          <div class="form-group">
+            <label for="select-role">Rôle</label>
+            <select id="select-role" name="role" class="select">
+              <option>Client</option>
+              <option>Prestataire</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="3" class="textarea" placeholder="Décrivez votre projet"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="cards-title">
+        <h2 id="cards-title">Cards & avatars</h2>
+        <div class="grid">
+          <article class="card" aria-label="Prestataire coup de cœur">
+            <header class="card-header">
+              <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=96&q=80" alt="Portrait de Lina" class="avatar" />
+              <div>
+                <p class="card-title">Lina Studio</p>
+                <p class="card-meta">Wedding planner • Paris</p>
+              </div>
+            </header>
+            <p>Expérience immersive, gestion complète du jour J et ateliers personnalisés.</p>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <span class="badge badge-success">Top 5%</span>
+              <span class="badge">Réponse &lt; 1h</span>
+              <span class="badge badge-warning">Nouveauté</span>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="button button-primary" type="button">Contacter</button>
+              <button class="button button-ghost" type="button">Enregistrer</button>
+            </div>
+          </article>
+          <article class="card" aria-label="Inspiration mise en avant">
+            <header class="card-header">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&q=80" alt="Portrait de Jade" class="avatar avatar-lg" />
+              <div>
+                <p class="card-title">Inspiration bohème chic</p>
+                <p class="card-meta">By Jade Events • 340 favoris</p>
+              </div>
+            </header>
+            <p>Palette sable et terracotta, matières naturelles, arches florales XXL.</p>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <span class="badge badge-danger">Slots limités</span>
+              <span class="badge">Livrables en 72h</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="modal-title">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <div>
+            <h2 id="modal-title">Modal accessible</h2>
+            <p class="helper-text">Focus retourné à l'élément déclencheur, rôle dialog, aria-modal.</p>
+          </div>
+          <button id="openModal" class="button button-primary" type="button">Ouvrir la modal</button>
+        </div>
+        <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+          <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dialog-title" aria-describedby="dialog-desc">
+            <header>
+              <div>
+                <p id="dialog-title" class="card-title" style="margin: 0;">Confirmer la réservation</p>
+                <p id="dialog-desc" class="card-meta" style="margin: 4px 0 0;">Assurez-vous d'avoir relu la proposition personnalisée.</p>
+              </div>
+              <button id="closeModal" class="button button-ghost" type="button" aria-label="Fermer la modal">✕</button>
+            </header>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="modal-note">Message (facultatif)</label>
+              <textarea id="modal-note" class="textarea" rows="3"></textarea>
+            </div>
+            <div class="modal-actions">
+              <button id="cancelModal" class="button" type="button">Annuler</button>
+              <button class="button button-primary" type="button">Valider</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="./scripts.js"></script>
+  </body>
+</html>

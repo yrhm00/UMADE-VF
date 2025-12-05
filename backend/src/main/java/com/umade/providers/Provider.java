@@ -36,6 +36,8 @@ public class Provider extends BaseEntity {
     private String instagram;
     private String tiktok;
 
+    private String category;
+
     private String city;
     private String country;
 

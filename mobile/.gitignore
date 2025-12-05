@@ -3,3 +3,11 @@ node_modules/
 .expo-shared/
 dist/
 web-build/
+node_modules
+.expo
+.expo-shared
+web-build
+android
+ios
+.DS_Store
+.env
