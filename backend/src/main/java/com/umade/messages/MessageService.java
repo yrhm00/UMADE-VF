@@ -1,12 +1,15 @@
 package com.umade.messages;
 
+import com.umade.featureflags.FeatureFlagService;
 import com.umade.users.User;
 import com.umade.users.UserRepository;
+import com.umade.analytics.AnalyticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -16,12 +19,16 @@ public class MessageService {
     private final ConversationRepository conversationRepository;
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
+    private final AnalyticsService analyticsService;
+    private final FeatureFlagService featureFlagService;
 
     public List<Conversation> getUserConversations(User user) {
+        featureFlagService.ensureMessagingEnabled(user);
         return conversationRepository.findByUserId(user.getId());
     }
 
     public List<Message> getMessages(UUID conversationId, User user) {
+        featureFlagService.ensureMessagingEnabled(user);
         Conversation conv = conversationRepository.findById(conversationId)
                 .orElseThrow(() -> new RuntimeException("Conversation not found"));
 
@@ -34,6 +41,7 @@ public class MessageService {
 
     @Transactional
     public Conversation startConversation(UUID otherUserId, User currentUser) {
+        featureFlagService.ensureMessagingEnabled(currentUser);
         if (currentUser.getId().equals(otherUserId)) {
             throw new RuntimeException("Cannot chat with yourself");
         }
@@ -53,6 +61,7 @@ public class MessageService {
 
     @Transactional
     public Message sendMessage(UUID conversationId, String content, String attachmentUrl, User sender) {
+        featureFlagService.ensureMessagingEnabled(sender);
         Conversation conv = conversationRepository.findById(conversationId)
                 .orElseThrow(() -> new RuntimeException("Conversation not found"));
 
@@ -70,6 +79,17 @@ public class MessageService {
         conv.setLastMessagePreview(content.length() > 50 ? content.substring(0, 50) + "..." : content);
         conversationRepository.save(conv);
 
-        return messageRepository.save(msg);
+        Message saved = messageRepository.save(msg);
+        UUID recipientId = conv.getUser1().getId().equals(sender.getId())
+                ? conv.getUser2().getId()
+                : conv.getUser1().getId();
+
+        analyticsService.trackEvent(sender.getId().toString(), "Message Sent", Map.of(
+                "conversationId", conv.getId().toString(),
+                "recipientId", recipientId.toString(),
+                "hasAttachment", attachmentUrl != null && !attachmentUrl.isBlank()
+        ));
+
+        return saved;
     }
 }

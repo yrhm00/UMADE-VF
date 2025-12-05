@@ -15,4 +15,17 @@
     "types": ["react", "react-dom"]
   },
   "include": ["src"]
+    "target": "es2017",
+    "module": "esnext",
+    "jsx": "react",
+    "strict": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "allowJs": false,
+    "esModuleInterop": true,
+    "baseUrl": "./src"
+  },
+  "include": ["src/**/*"]
 }
