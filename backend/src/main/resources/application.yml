@@ -18,6 +18,15 @@ umade:
   jwt:
     secret: "CHANGE_ME_SUPER_SECRET_KEY_256_BITS"
     expiration-ms: 86400000  # 24h
+  feature-flags:
+    messaging:
+      enabled: false
+      rollout-percentage: 0
+      allow-list: []
+    notifications:
+      enabled: false
+      rollout-percentage: 0
+      allow-list: []
 
 aws:
   region: "eu-west-3"
@@ -26,3 +35,21 @@ aws:
 
 fcm:
   server-key: "CHANGE_ME_FCM_SERVER_KEY"
+analytics:
+  enabled: true
+  segment:
+    write-key: ${SEGMENT_WRITE_KEY:}
+    endpoint: https://api.segment.io/v1/track
+  amplitude:
+    api-key: ${AMPLITUDE_API_KEY:}
+    endpoint: https://api2.amplitude.com/2/httpapi
+
+sentry:
+  dsn: ${SENTRY_DSN:}
+  environment: ${SENTRY_ENVIRONMENT:local}
+  release: ${SENTRY_RELEASE:0.0.1}
+  traces-sample-rate: 1.0
+  profiles-sample-rate: 0.2
+  in-app-includes:
+    - com.umade
+  attach-stacktrace: true
