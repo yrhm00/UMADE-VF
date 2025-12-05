@@ -29,15 +29,15 @@ gradle wrapper
 
 ## Étape 2 : Lancer la Base de Données (Terminal 1)
 
-Lancez cette commande pour démarrer PostgreSQL via Docker.
+Lancez cette commande pour démarrer PostgreSQL via Docker en tâche de fond sur le port 5433 (pour éviter les conflits).
 
 ```bash
 docker run --name umade-db \
   -e POSTGRES_DB=umade \
   -e POSTGRES_USER=umade \
   -e POSTGRES_PASSWORD=umade \
-  -p 5432:5432 \
-  --rm \
+  -p 5433:5432 \
+  -d \
   postgres:15
 ```
 
@@ -48,13 +48,10 @@ docker run --name umade-db \
 Ouvrez un **nouveau terminal**, puis exécutez :
 
 ```bash
-# 1. Aller dans le dossier backend
-cd "Desktop/UMADE VF/backend"
+# 1. Aller dans le dossier backend (depuis le dossier racine)
+cd backend
 
-# 2. Configurer Java 17 (Important pour Mac M1/M2/M3)
-export JAVA_HOME="/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
-
-# 3. Lancer le serveur
+# 2. Lancer le serveur (Gradle détecte automatiquement Java 17 via nos correctifs)
 gradle bootRun
 ```
 
@@ -69,10 +66,11 @@ gradle bootRun
    - Supposons que c'est `192.168.1.45`.
 
 2. Ouvrez le fichier `.env` qui se trouve dans `Desktop/UMADE VF/`.
-3. Modifiez la première ligne avec **votre** IP :
+3. Modifiez la première ligne avec **votre** IP (le port reste 8080) :
    ```env
    API_BASE_URL=http://192.168.1.45:8080
    ```
+*(Note : Le port de la base de données 5433 est géré en interne par le backend, ne le mettez pas ici).*
 
 ---
 
@@ -81,10 +79,14 @@ gradle bootRun
 Ouvrez un **troisième terminal**, puis exécutez :
 
 ```bash
-# 1. Aller dans le dossier mobile
-cd "Desktop/UMADE VF/mobile"
+# 1. Aller dans le dossier mobile (depuis le dossier racine)
+cd mobile
 
-# 2. Lancer Expo
+# 2. (Optionnel) Si vous avez des erreurs de dépendances, lancez :
+rm -rf node_modules package-lock.json
+npm install --legacy-peer-deps
+
+# 3. Lancer Expo
 npx expo start --clear
 ```
 
