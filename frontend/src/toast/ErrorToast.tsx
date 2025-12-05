@@ -1,11 +1,11 @@
 import React from 'react';
-import Toast from 'react-native-toast-message';
+import Toast, { BaseToast } from 'react-native-toast-message';
 
 export const ErrorToast = () => (
   <Toast
     config={{
       error: ({ text1, text2 }) => (
-        <Toast.Base
+        <BaseToast
           text1={text1}
           text2={text2}
           style={{ borderLeftColor: '#d14343' }}
