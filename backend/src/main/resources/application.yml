@@ -23,3 +23,6 @@ aws:
   region: "eu-west-3"
   s3:
     bucket: "umade-bucket"
+
+fcm:
+  server-key: "CHANGE_ME_FCM_SERVER_KEY"
