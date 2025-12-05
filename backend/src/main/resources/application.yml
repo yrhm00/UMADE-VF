@@ -32,3 +32,22 @@ aws:
   region: "eu-west-3"
   s3:
     bucket: "umade-bucket"
+
+analytics:
+  enabled: true
+  segment:
+    write-key: ${SEGMENT_WRITE_KEY:}
+    endpoint: https://api.segment.io/v1/track
+  amplitude:
+    api-key: ${AMPLITUDE_API_KEY:}
+    endpoint: https://api2.amplitude.com/2/httpapi
+
+sentry:
+  dsn: ${SENTRY_DSN:}
+  environment: ${SENTRY_ENVIRONMENT:local}
+  release: ${SENTRY_RELEASE:0.0.1}
+  traces-sample-rate: 1.0
+  profiles-sample-rate: 0.2
+  in-app-includes:
+    - com.umade
+  attach-stacktrace: true
