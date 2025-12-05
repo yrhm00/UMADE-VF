@@ -18,8 +18,15 @@ umade:
   jwt:
     secret: "CHANGE_ME_SUPER_SECRET_KEY_256_BITS"
     expiration-ms: 86400000  # 24h
-  security:
-    require-https: true
+  feature-flags:
+    messaging:
+      enabled: false
+      rollout-percentage: 0
+      allow-list: []
+    notifications:
+      enabled: false
+      rollout-percentage: 0
+      allow-list: []
 
 aws:
   region: "eu-west-3"
