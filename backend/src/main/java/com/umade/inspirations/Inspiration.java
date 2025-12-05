@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -39,4 +41,14 @@ public class Inspiration extends BaseEntity {
     @Column(nullable = false)
     @Builder.Default
     private boolean publicVisible = true;
+
+    @OneToMany(mappedBy = "inspiration", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<InspirationMedia> media = new ArrayList<>();
+
+    @Builder.Default
+    private int favoriteCount = 0;
+
+    @Builder.Default
+    private int reportCount = 0;
 }
