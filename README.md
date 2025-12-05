@@ -281,3 +281,7 @@ Cette architecture est :
 - **Prête pour le futur** : monétisation prestataires, pub, sponsoring, analytics
 
 Inspirée des standards de plateformes comme Airbnb Experiences, Pinterest, Instagram Business ou WeddingWire.
+
+## 12. 📝 Instructions de Lancement
+
+Pour lancer le projet, référez-vous au fichier `INSTRUCTIONS_LANCEMENT.md` disponible à la racine du projet. Ce document guide étape par étape pour démarrer la base de données, le backend et l'application mobile.
