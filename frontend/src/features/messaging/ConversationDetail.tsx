@@ -11,6 +11,8 @@ interface ConversationDetailProps {
   refreshStrategy?: RefreshStrategy;
 }
 
+const DEFAULT_PAGE_SIZE = 20;
+
 interface PendingMessage extends Message {
   deliveryState: 'pending' | 'failed';
 }
@@ -20,7 +22,7 @@ export function ConversationDetail({ conversationId, meId, refreshStrategy }: Co
   const [messages, setMessages] = useState<Message[]>([]);
   const [pagination, setPagination] = useState<Omit<PaginatedResponse<Message>, 'items'>>({
     page: 0,
-    size: 20,
+    size: DEFAULT_PAGE_SIZE,
     total: 0,
     hasMore: true,
   });
@@ -68,6 +70,18 @@ export function ConversationDetail({ conversationId, meId, refreshStrategy }: Co
   }, [conversationId, latestMessageId, loadMessages, pagination.size]);
 
   useMessagingRefresh(refreshStrategy, { conversationId, onRefresh: refreshFromTail });
+
+  useEffect(() => {
+    setMessages([]);
+    setPagination({
+      page: 0,
+      size: DEFAULT_PAGE_SIZE,
+      total: 0,
+      hasMore: true,
+    });
+    setPage(0);
+    setError(null);
+  }, [conversationId]);
 
   useEffect(() => {
     loadMessages(page);
