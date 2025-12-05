@@ -28,15 +28,33 @@ public class InspirationController {
         return inspirationService.getInspiration(id);
     }
 
-    @PostMapping("/{id}/favorite")
-    public void addFavorite(@PathVariable UUID id,
+    @PostMapping
+    public Inspiration create(
+            @RequestBody InspirationService.InspirationRequest request,
             @AuthenticationPrincipal User user) {
-        inspirationService.addFavorite(id, user);
+        return inspirationService.createInspiration(request, user);
+    }
+
+    @PostMapping("/{id}/favorite")
+    public InspirationService.InspirationActionResponse addFavorite(@PathVariable UUID id,
+            @AuthenticationPrincipal User user) {
+        return inspirationService.addFavorite(id, user);
     }
 
     @DeleteMapping("/{id}/favorite")
-    public void removeFavorite(@PathVariable UUID id,
+    public InspirationService.InspirationActionResponse removeFavorite(@PathVariable UUID id,
             @AuthenticationPrincipal User user) {
-        inspirationService.removeFavorite(id, user);
+        return inspirationService.removeFavorite(id, user);
+    }
+
+    @PostMapping("/{id}/report")
+    public InspirationService.InspirationActionResponse report(
+            @PathVariable UUID id,
+            @RequestBody(required = false) InspirationService.ReportRequest request,
+            @AuthenticationPrincipal User user) {
+        InspirationService.ReportRequest safeRequest = request == null
+                ? new InspirationService.ReportRequest(null)
+                : request;
+        return inspirationService.report(id, safeRequest, user);
     }
 }
