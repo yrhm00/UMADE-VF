@@ -1,0 +1,150 @@
+.conversation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-right: 1px solid #e5e5e5;
+  max-width: 320px;
+}
+
+.conversation-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 0.75rem;
+  background: #fff;
+  cursor: pointer;
+}
+
+.conversation-row:hover {
+  background: #f7f7f7;
+}
+
+.avatars img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #e5e5e5;
+}
+
+.meta .names {
+  font-weight: 600;
+}
+
+.meta .preview {
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.conversation-detail {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.5rem;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f7f7f7;
+  border-radius: 12px;
+}
+
+.bubble-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.bubble-row.mine {
+  align-items: flex-end;
+}
+
+.bubble-row.theirs {
+  align-items: flex-start;
+}
+
+.bubble {
+  max-width: 70%;
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  position: relative;
+}
+
+.bubble-row.mine .bubble {
+  background: #007aff;
+  color: white;
+  border-color: #007aff;
+}
+
+.bubble.failed {
+  border-color: #cc0000;
+  box-shadow: 0 0 0 1px #cc0000 inset;
+}
+
+.bubble a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.bubble .meta {
+  display: block;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  color: inherit;
+  opacity: 0.75;
+}
+
+.message-input {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.message-input input {
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: 1px solid #e5e5e5;
+}
+
+.message-input button {
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  border: none;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+}
+
+.resend {
+  background: transparent;
+  border: 1px solid #cc0000;
+  color: #cc0000;
+  padding: 0.25rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.load-more {
+  align-self: center;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  cursor: pointer;
+}
+
+.error {
+  color: #cc0000;
+  margin: 0 1rem 1rem;
+}

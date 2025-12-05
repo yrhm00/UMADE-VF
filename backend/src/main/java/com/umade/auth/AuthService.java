@@ -3,20 +3,26 @@ package com.umade.auth;
 import com.umade.users.User;
 import com.umade.users.UserRepository;
 import com.umade.users.UserRole;
+import com.umade.analytics.AnalyticsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class AuthService {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final AnalyticsService analyticsService;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public AuthService(UserRepository userRepository,
-            JwtService jwtService) {
+            JwtService jwtService,
+            AnalyticsService analyticsService) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
+        this.analyticsService = analyticsService;
     }
 
     public String register(AuthController.RegisterRequest req) {
@@ -32,6 +38,11 @@ public class AuthService {
         user.setRole(req.role() != null ? req.role() : UserRole.CLIENT);
 
         userRepository.save(user);
+
+        analyticsService.trackEvent(user.getId().toString(), "Signup Completed", Map.of(
+                "role", user.getRole().name(),
+                "email", user.getEmail()
+        ));
 
         return jwtService.generateToken(user);
     }

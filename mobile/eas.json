@@ -1,0 +1,28 @@
+{
+  "cli": {
+    "version": ">= 7.0.0"
+  },
+  "build": {
+    "beta": {
+      "distribution": "internal",
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "ios": {
+        "simulator": false
+      },
+      "env": {
+        "APP_ENV": "beta"
+      }
+    },
+    "release": {
+      "distribution": "store",
+      "env": {
+        "APP_ENV": "production"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

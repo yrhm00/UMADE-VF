@@ -16,5 +16,9 @@ public interface ProviderRepository extends JpaRepository<Provider, UUID> {
             """)
     List<Provider> search(String q, String city, String category);
 
+    List<Provider> findByCityIgnoreCase(String city);
+
+    List<Provider> findByBusinessNameContainingIgnoreCase(String q);
+
     Optional<Provider> findByUserId(UUID userId);
 }

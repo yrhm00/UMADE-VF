@@ -1,5 +1,6 @@
 package com.umade.notifications;
 
+import com.umade.featureflags.FeatureFlagService;
 import com.umade.users.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,13 +13,18 @@ import java.util.List;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final NotificationTokenRepository notificationTokenRepository;
+    private final FcmClient fcmClient;
+    private final FeatureFlagService featureFlagService;
 
     public List<Notification> getUserNotifications(User user) {
+        featureFlagService.ensureNotificationsEnabled(user);
         return notificationRepository.findByUserIdOrderByCreatedAtDesc(user.getId());
     }
 
     @Transactional
     public void markAllAsRead(User user) {
+        featureFlagService.ensureNotificationsEnabled(user);
         List<Notification> notifications = notificationRepository.findByUserIdOrderByCreatedAtDesc(user.getId());
         notifications.forEach(n -> n.setRead(true));
         notificationRepository.saveAll(notifications);
@@ -26,6 +32,7 @@ public class NotificationService {
 
     @Transactional
     public void sendNotification(User user, String title, String body, String type, String referenceId) {
+        featureFlagService.ensureNotificationsEnabled(user);
         Notification notification = Notification.builder()
                 .user(user)
                 .title(title)
@@ -35,6 +42,33 @@ public class NotificationService {
                 .build();
         notificationRepository.save(notification);
 
-        // TODO: Send FCM push notification
+        List<String> tokens = notificationTokenRepository.findByUserId(user.getId()).stream()
+                .map(NotificationToken::getToken)
+                .toList();
+
+        fcmClient.send(tokens, title, body, type, referenceId);
+    }
+
+    @Transactional
+    public void registerToken(User user, String token) {
+        notificationTokenRepository.findByToken(token).ifPresent(existing -> {
+            if (!existing.getUser().getId().equals(user.getId())) {
+                existing.setUser(user);
+                notificationTokenRepository.save(existing);
+            }
+        });
+
+        if (!notificationTokenRepository.existsByUserIdAndToken(user.getId(), token)) {
+            NotificationToken newToken = NotificationToken.builder()
+                    .user(user)
+                    .token(token)
+                    .build();
+            notificationTokenRepository.save(newToken);
+        }
+    }
+
+    @Transactional
+    public void unregisterToken(User user, String token) {
+        notificationTokenRepository.deleteByUserIdAndToken(user.getId(), token);
     }
 }
