@@ -1,14 +1,16 @@
 import React from 'react';
-import { NativeBaseProvider } from 'native-base';
+import { TamaguiProvider, Theme } from 'tamagui';
 import { StatusBar } from 'expo-status-bar';
 import RootNavigator from '@/navigation/RootNavigator';
-import theme from '@/theme';
+import config from './tamagui.config';
 
 export default function App() {
   return (
-    <NativeBaseProvider theme={theme}>
-      <StatusBar style="dark" />
-      <RootNavigator />
-    </NativeBaseProvider>
+    <TamaguiProvider config={config}>
+      <Theme name="light">
+        <StatusBar style="dark" />
+        <RootNavigator />
+      </Theme>
+    </TamaguiProvider>
   );
 }

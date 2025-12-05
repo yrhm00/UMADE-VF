@@ -1,25 +1,30 @@
 import React from 'react';
-import { Avatar, Box, Heading, HStack, Text, VStack } from 'native-base';
+import { Avatar, YStack, XStack, H3, Paragraph, Text } from 'tamagui';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const ProfileScreen: React.FC = () => {
   return (
-    <Box safeArea flex={1} bg="neutral.50" px={4} py={6}>
-      <VStack space={4}>
-        <HStack space={3} alignItems="center">
-          <Avatar bg="primary.500">UV</Avatar>
-          <VStack>
-            <Heading size="md" color="primary.700">
+    <SafeAreaView style={{ flex: 1 }}>
+      <YStack flex={1} backgroundColor="$background" padding="$4" space="$4">
+        <XStack space="$3" alignItems="center">
+          <Avatar circular size="$4">
+            <Avatar.Fallback backgroundColor="$blue10" alignItems="center" justifyContent="center">
+              <Text color="white">UV</Text>
+            </Avatar.Fallback>
+          </Avatar>
+          <YStack>
+            <H3 color="$blue10">
               Utilisateur invité
-            </Heading>
-            <Text color="neutral.700">Bienvenue dans votre nouvel espace mobile.</Text>
-          </VStack>
-        </HStack>
-        <Text color="neutral.700">
+            </H3>
+            <Paragraph color="$gray11">Bienvenue dans votre nouvel espace mobile.</Paragraph>
+          </YStack>
+        </XStack>
+        <Paragraph color="$gray11">
           Personnalisez cette page pour afficher les informations de profil, les paramètres ou
           d'autres modules importants.
-        </Text>
-      </VStack>
-    </Box>
+        </Paragraph>
+      </YStack>
+    </SafeAreaView>
   );
 };
 

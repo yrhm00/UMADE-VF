@@ -1,17 +1,20 @@
 import React from 'react';
-import { Box, Heading, Text, VStack } from 'native-base';
+import { YStack, H2, Paragraph } from 'tamagui';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const ExploreScreen: React.FC = () => {
   return (
-    <Box safeArea flex={1} bg="neutral.50" px={4} py={6}>
-      <VStack space={3}>
-        <Heading color="primary.700">Explorer</Heading>
-        <Text color="neutral.700">
-          Ajoutez vos futures fonctionnalités ici : cartes, listes ou toute autre expérience
-          personnalisée.
-        </Text>
-      </VStack>
-    </Box>
+    <SafeAreaView style={{ flex: 1 }}>
+      <YStack flex={1} backgroundColor="$background" padding="$4" space="$3">
+        <YStack space="$3">
+          <H2 color="$blue10">Explorer</H2>
+          <Paragraph color="$gray11">
+            Ajoutez vos futures fonctionnalités ici : cartes, listes ou toute autre expérience
+            personnalisée.
+          </Paragraph>
+        </YStack>
+      </YStack>
+    </SafeAreaView>
   );
 };
 
