@@ -95,15 +95,15 @@ public class InspirationService {
             favoriteRepo.save(fav);
             inspiration.setFavoriteCount(inspiration.getFavoriteCount() + 1);
             inspirationRepository.save(inspiration);
+
+            analyticsService.trackEvent(user.getId().toString(), "Inspiration Favorited", Map.of(
+                    "inspirationId", inspiration.getId().toString(),
+                    "title", inspiration.getTitle(),
+                    "authorId", inspiration.getAuthor().getId().toString()
+            ));
         }
 
         return buildActionResponse(inspiration, user);
-        favoriteRepo.save(fav);
-        analyticsService.trackEvent(user.getId().toString(), "Inspiration Favorited", Map.of(
-                "inspirationId", inspiration.getId().toString(),
-                "title", inspiration.getTitle(),
-                "authorId", inspiration.getAuthor().getId().toString()
-        ));
     }
 
     @Transactional
@@ -142,6 +142,12 @@ public class InspirationService {
     private InspirationActionResponse buildActionResponse(Inspiration inspiration, User user) {
         boolean favorite = favoriteRepo.existsByUserAndInspiration(user, inspiration);
         boolean reported = inspirationReportRepository.existsByUserAndInspiration(user, inspiration);
+
+        long favoriteCount = favoriteRepo.countByIdInspirationId(inspiration.getId());
+        if (favoriteCount != inspiration.getFavoriteCount()) {
+            inspiration.setFavoriteCount((int) favoriteCount);
+            inspirationRepository.save(inspiration);
+        }
 
         return new InspirationActionResponse(
                 inspiration.getId(),
